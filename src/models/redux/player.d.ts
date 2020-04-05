@@ -1,5 +1,6 @@
 interface PlayerStore {
-    currentTrackId: number;
+    currentTrackId: string;
     progress: number;
     playing: boolean;
+    showVideo: boolean;
 }

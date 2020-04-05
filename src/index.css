@@ -6,11 +6,16 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: transparent !important;
+    overflow: hidden;
 }
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
         monospace;
+}
+
+.btn-hover:hover {
+    opacity: 0.6;
 }
 
 .ag-theme-material .ag-root-wrapper {
@@ -34,7 +39,7 @@ code {
 }
 
 .ag-theme-material .ag-row-selected {
-    background-color: #e8eaf6 !important;
+    background-color: #c5cae9 !important;
 }
 
 .frameless-handle {

@@ -18,18 +18,20 @@ const Player = ({
     progress,
     soundtracks,
     setPlay,
-    setProgress
+    setProgress,
+    showVideo,
 }: {
-    currentTrackId: number;
+    currentTrackId: string;
     playing: boolean;
     progress: number;
     soundtracks: Soundtrack[];
     setPlay: Function;
     setProgress: Function;
+    showVideo: boolean;
 }): JSX.Element => {
     const currentTrack = find(
         soundtracks,
-        (track: { id: number }) => track.id === currentTrackId
+        (track: { id: string }) => track.id === currentTrackId
     );
     const ref: any = React.useRef();
 
@@ -44,23 +46,88 @@ const Player = ({
 
     return (
         <div
-            className="frameless-handle"
             style={{
-                padding: 10,
-                color: "#fafafa",
-
                 backgroundImage:
                     "linear-gradient(to bottom right, #512da8 , #64ffda)",
                 opacity: 0.9,
-                textAlign: "center"
             }}
         >
-            <div style={{ display: "none" }}>
+            <div
+                className="frameless-handle"
+                style={{
+                    padding: 10,
+                    color: "#fafafa",
+
+                    textAlign: "center",
+                    height: showVideo ? 10 : "auto",
+                }}
+            >
+                {!showVideo && (
+                    <div
+                        style={{
+                            userSelect: "none",
+                            marginTop: 20,
+                        }}
+                    >
+                        <div
+                            style={{
+                                fontSize: "13pt",
+                                marginBottom: 5,
+                                fontWeight: "bold",
+                            }}
+                        >
+                            {get(currentTrack, "title")}
+                        </div>
+
+                        <div style={{ fontSize: "10pt" }}>
+                            {get(currentTrack, "artist")}
+                        </div>
+                    </div>
+                )}
+
+                {showVideo && (
+                    <div
+                        style={{
+                            textAlign: "center",
+                            fontSize: "10pt",
+                            fontWeight: "bold",
+                            userSelect: "none",
+                        }}
+                    >
+                        {`${get(currentTrack, "artist")} - ${get(
+                            currentTrack,
+                            "title"
+                        )}`}
+                    </div>
+                )}
+            </div>
+
+            <div
+                style={{
+                    display: showVideo ? "block" : "none",
+                    width: "100%",
+                    background: "black",
+                }}
+            >
+                <div
+                    style={{
+                        height: 360,
+                        width: "100%",
+                        zIndex: 5,
+                        opacity: playing ? 0 : 1,
+                        background: "black",
+                        position: "absolute",
+                        transition: "0.8s opacity",
+                    }}
+                />
                 <ReactPlayer
+                    style={{
+                        marginLeft: "calc(50vw - 320px)",
+                    }}
                     ref={ref}
                     url={get(currentTrack, "url")}
                     playing={playing}
-                    onProgress={params => {
+                    onProgress={(params) => {
                         setProgress(Math.floor(params.played * 100));
                     }}
                     onPause={() => {
@@ -75,34 +142,14 @@ const Player = ({
                     }}
                 />
             </div>
-            <div
-                style={{
-                    userSelect: "none",
-                    marginTop: 20
-                }}
-            >
-                <div
-                    style={{
-                        fontSize: "13pt",
-                        marginBottom: 5,
-                        fontWeight: "bold"
-                    }}
-                >
-                    {get(currentTrack, "title")}
-                </div>
-
-                <div style={{ fontSize: "10pt" }}>
-                    {get(currentTrack, "artist")}
-                </div>
-            </div>
 
             <div
                 style={{
-                    marginTop: 15,
-                    marginLeft: "8vw",
-                    marginRight: "8vw",
+                    marginTop: 8,
+                    marginLeft: "10vw",
+                    marginRight: "10vw",
                     paddingLeft: 20,
-                    paddingRight: 20
+                    paddingRight: 20,
                 }}
                 className="frameless-handle-no-drag"
             >
@@ -113,7 +160,7 @@ const Player = ({
                 />
             </div>
 
-            <div>
+            <div style={{ textAlign: "center", marginBottom: 3 }}>
                 <IconButton className="frameless-handle-no-drag">
                     <FastRewindIcon />
                 </IconButton>
@@ -136,10 +183,11 @@ export default connect(
         soundtracks: state.playlist.soundtracks,
         progress: state.player.progress,
         playing: state.player.playing,
-        currentTrackId: state.player.currentTrackId
+        currentTrackId: state.player.currentTrackId,
+        showVideo: state.player.showVideo,
     }),
-    dispatch => ({
+    (dispatch) => ({
         setPlay: (playing: boolean) => dispatch(setPlay(playing)),
-        setProgress: (progress: number) => dispatch(setProgress(progress))
+        setProgress: (progress: number) => dispatch(setProgress(progress)),
     })
 )(Player);
