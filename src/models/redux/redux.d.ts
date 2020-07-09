@@ -1,4 +1,4 @@
 interface Store {
-    playlist: PlaylistStore;
-    player: PlayerStore;
+  playlist: PlaylistStore;
+  player: PlayerStore;
 }
