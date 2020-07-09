@@ -23,8 +23,7 @@
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "typescript": "~3.7.2",
-    "uuid": "^7.0.3",
-    "ytdl-core": "^2.0.1"
+    "uuid": "^7.0.3"
   },
   "scripts": {
     "electron": "electron .",
