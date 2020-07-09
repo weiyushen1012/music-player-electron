@@ -9,7 +9,7 @@ const initialStore = {
   currentTrackId: "",
   progress: 0,
   playing: false,
-  showVideo: false,
+  showVideo: true,
 };
 
 const reducer = (

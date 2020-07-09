@@ -1,5 +1,5 @@
 {
-  "name": "walkman",
+  "name": "music-player-electron",
   "version": "0.1.0",
   "private": true,
   "main": "./electron/main.js",
@@ -14,6 +14,7 @@
     "@types/uuid": "^7.0.2",
     "ag-grid-community": "^23.0.1",
     "ag-grid-react": "^23.0.0",
+    "concurrently": "^5.2.0",
     "immutability-helper": "^3.0.2",
     "lodash": "^4.17.15",
     "react": "^16.13.1",
@@ -23,11 +24,12 @@
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "typescript": "~3.7.2",
-    "uuid": "^7.0.3"
+    "uuid": "^7.0.3",
+    "wait-on": "^5.0.3"
   },
   "scripts": {
-    "electron": "electron .",
-    "start": "react-scripts start",
+    "start": "concurrently \"yarn run react\" \"wait-on http://localhost:3000 && electron .\"",
+    "react": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

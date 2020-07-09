@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 import { AgGridReact } from "ag-grid-react/lib/agGridReact";
@@ -9,6 +9,7 @@ import {
   setCurrentTrackId,
 } from "../redux/actions/player";
 import { setGridApi } from "../redux/actions/playlist";
+import { savePlaylist } from "../services/ipc";
 
 const columnDefs: ColDef[] = [
   { field: "title", width: 250, rowDrag: true },
@@ -38,10 +39,6 @@ const Playlist = ({
   setCurrentTrackId: Function;
   setGridApi: Function;
 }): JSX.Element => {
-  useEffect(() => {
-    console.log(soundtracks);
-  }, [soundtracks]);
-
   return (
     <AgGridReact
       animateRows
@@ -59,6 +56,15 @@ const Playlist = ({
         setCurrentTrackId(params.data.id);
       }}
       onGridReady={(params: any) => setGridApi(params.api)}
+      onRowValueChanged={(params: any) => {
+        const newPlaylist: Soundtrack[] = [];
+
+        params.api.forEachNode((node: any) => {
+          newPlaylist.push(node.data);
+        });
+
+        savePlaylist(newPlaylist);
+      }}
     ></AgGridReact>
   );
 };

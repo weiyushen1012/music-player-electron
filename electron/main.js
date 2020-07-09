@@ -1,4 +1,6 @@
 const { app, BrowserWindow } = require("electron");
+const fs = require("fs");
+require("./ipc.js");
 
 let mainWin;
 const createWindow = () => {
@@ -16,7 +18,17 @@ const createWindow = () => {
   });
   mainWin.loadURL("http://localhost:3000");
   mainWin.setMenu(null);
+  mainWin.toggleDevTools();
 };
 
 app.allowRendererProcessReuse = true;
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  createWindow();
+  fs.readFile("./test.json", { encoding: "utf-8" }, function (err, data) {
+    if (!err) {
+      console.log(data);
+    } else {
+      console.error(err);
+    }
+  });
+});
